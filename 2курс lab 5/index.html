@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Конвертер температуры</title>
+</head>
+<body>
+
+    <h1>Конвертер температуры</h1>
+
+    <label for="temperature">Введите температуру:</label>
+    <input type="number" id="temperature" placeholder="Например, 25">
+
+    <br><br>
+
+    <label for="fromUnit">Из:</label>
+    <select id="fromUnit">
+        <option value="C">Цельсий (°C)</option>
+        <option value="F">Фаренгейт (°F)</option>
+        <option value="K">Кельвин (K)</option>
+    </select>
+
+    <label for="toUnit">В:</label>
+    <select id="toUnit">
+        <option value="C">Цельсий (°C)</option>
+        <option value="F">Фаренгейт (°F)</option>
+        <option value="K">Кельвин (K)</option>
+    </select>
+
+    <br><br>
+
+    <button id="convertButton">Конвертировать</button>
+
+    <p id="result">Результат появится здесь</p>
+    <h2>История конвертаций</h2>
+
+<ul id="history"></ul>
+
+<button id="clearHistory">Очистить историю</button>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
