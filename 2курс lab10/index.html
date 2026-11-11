@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Лабораторная работа №10: три мини-проекта на JavaScript с ES-модулями.">
+  <title>Лабораторная №10 — ES-модули</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">ЛАБОРАТОРНАЯ РАБОТА / 10</p>
+        <h1>Основы ES-модулей</h1>
+        <p class="page-subtitle">Три уровня. Три приложения. Одна точка входа.</p>
+      </div>
+      <div class="student-card">
+        <strong>Манкеев Жанибек</strong>
+        <span>Группа ИС-25-22</span>
+        <span>04 ноября 2026</span>
+      </div>
+    </header>
+
+    <nav class="level-tabs" role="tablist" aria-label="Уровни лабораторной работы">
+      <button id="tab-basic" class="level-tab" type="button" role="tab" aria-selected="true" aria-controls="basic" data-level="basic">
+        <span class="tab-number">01</span><span><strong>Базовый</strong><small>Конвертер температур</small></span>
+      </button>
+      <button id="tab-medium" class="level-tab" type="button" role="tab" aria-selected="false" aria-controls="medium" tabindex="-1" data-level="medium">
+        <span class="tab-number">02</span><span><strong>Средний</strong><small>Список задач</small></span>
+      </button>
+      <button id="tab-advanced" class="level-tab" type="button" role="tab" aria-selected="false" aria-controls="advanced" tabindex="-1" data-level="advanced">
+        <span class="tab-number">03</span><span><strong>Повышенный</strong><small>Мини-CRM клиентов</small></span>
+      </button>
+    </nav>
+
+    <main>
+      <p id="startup-status" class="notice" role="status">Загрузка приложений… Если формы не появились, запустите start.py и откройте http://127.0.0.1:8000.</p>
+      <noscript><p class="notice error">Для работы приложений включите JavaScript в браузере.</p></noscript>
+      <section id="basic" class="level-panel" role="tabpanel" aria-labelledby="tab-basic" tabindex="0"></section>
+      <section id="medium" class="level-panel" role="tabpanel" aria-labelledby="tab-medium" tabindex="0" hidden></section>
+      <section id="advanced" class="level-panel" role="tabpanel" aria-labelledby="tab-advanced" tabindex="0" hidden></section>
+    </main>
+
+    <footer class="page-footer">
+      <span>Языки и технология программирования</span>
+      <a href="./report.html" target="_blank" rel="noopener">Отчёт и подготовка к защите ↗</a>
+    </footer>
+  </div>
+  <script>
+    if (location.protocol === 'file:') {
+      const message = document.querySelector('#startup-status');
+      message.className = 'notice error';
+      message.textContent = 'Запустите python3 start.py (macOS) или START_WINDOWS.bat (Windows). Затем откройте http://127.0.0.1:8000: ES-модули должны загружаться через HTTP.';
+    }
+  </script>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

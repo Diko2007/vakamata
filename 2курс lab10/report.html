@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Отчёт — Лабораторная №10 — Манкеев Жанибек</title>
+<style>
+*{box-sizing:border-box}html{color-scheme:light}body{margin:0;background:#f3f5f7;color:#182b3a;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.toolbar{max-width:1120px;margin:24px auto 0;padding:0 30px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:14px}
+article{max-width:1120px;margin:20px auto 40px;padding:45px 50px;background:white;border:1px solid #d9e2e9;border-radius:14px;overflow-wrap:anywhere}
+h1{font-size:30px;line-height:1.25;letter-spacing:-.02em;margin:0 0 24px}h2{font-size:23px;margin:45px 0 16px;border-top:1px solid #d9e2e9;padding-top:24px;line-height:1.3}h3{font-size:18px;margin:25px 0 10px;line-height:1.4}p{margin:14px 0}a{color:#086d65;text-underline-offset:3px}li{margin:7px 0}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:22px 0;table-layout:auto}th,td{padding:12px 14px;text-align:left;border:1px solid #d9e2e9;vertical-align:top}th{background:#f0f5f7}tbody tr:nth-child(even){background:#fafbfc}
+pre{background:#172b3a;color:#e9f1f5;border-radius:8px;padding:18px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;font-size:13px}code{font:0.91em ui-monospace,SFMono-Regular,Consolas,monospace;background:#edf3f6;padding:2px 4px;border-radius:3px}pre code{background:transparent;padding:0;color:inherit;font-size:inherit}
+img{display:block;max-width:100%;height:auto;margin:20px auto;border:1px solid #d9e2e9;border-radius:8px}img[src$="mobile.png"]{max-width:320px}strong{font-weight:700}
+@media(max-width:700px){article{margin:15px 10px;padding:25px 18px}.toolbar{padding:0 18px}body{font-size:14px}h1{font-size:24px}h2{font-size:21px}th,td{padding:8px;font-size:12px}img[src$="mobile.png"]{max-width:100%}}
+@media print{@page{size:A4;margin:16mm}.toolbar{display:none}body{background:white;font-size:11px}article{max-width:none;border:0;padding:0;margin:0}h1{font-size:24px}h2{font-size:18px;break-after:avoid;margin-top:24px}h3{font-size:14px;break-after:avoid}pre,table{font-size:10px}th,td{padding:6px}tr,img,pre{break-inside:avoid}img{max-height:220mm;max-width:100%;object-fit:contain}img[src$="mobile.png"]{max-height:220mm;width:auto}a{color:inherit}}
+</style></head><body><nav class="toolbar"><a href="./index.html">← К приложениям</a><a href="./README.md">README.md</a><span>Манкеев Жанибек · ИС-25-22</span></nav><article><h1>Лабораторная работа №10 — ES Modules</h1>
+<p><strong>Тема:</strong> «Основы модульности и структуры проекта: разделение кода на файлы, использование ES-модулей».</p>
+<p><strong>Студент:</strong> Мухаметов Дияр<br><strong>Группа:</strong> ИС-25-22<br><strong>Дисциплина:</strong> «Языки и технология программирования»<br><strong>Дата:</strong> 04.11.2026</p>
+<h2>1. Как запустить</h2>
+<ol>
+<li>Полностью распакуйте ZIP. Все папки внутри <code>Lab10_ESModules</code> должны остаться вместе.</li>
+<li>Для запуска на компьютере нужен Python 3 и современный браузер.</li>
+<li>Откройте Терминал в папке <code>Lab10_ESModules</code> и выполните:</li>
+</ol>
+<pre><code class="language-bash">python3 start.py
+</code></pre>
+<p>На Mac также можно открыть <code>START_MAC.command</code>. Если файл не разрешено запускать, используйте команду выше. На Windows откройте <code>START_WINDOWS.bat</code>; он запускает <code>py -3 start.py</code> либо <code>python start.py</code>.</p>
+<p>Сервер откроет браузер. Если вкладка не появилась, перейдите на <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>. Оставьте окно Терминала открытым; <code>Ctrl+C</code> останавливает сервер. На странице <code>index.html</code> доступны вкладки <strong>«Базовый»</strong>, <strong>«Средний»</strong> и <strong>«Повышенный»</strong>. Ссылка внизу страницы открывает <code>report.html</code>.</p>
+<p>Устанавливать пакеты через npm или pip не требуется. Python раздает готовые файлы, а JavaScript выполняется в браузере. Открывайте страницу через HTTP: прямое открытие <code>index.html</code> как <code>file://</code> мешает загрузке ES-модулей. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">MDN: Modules</a></p>
+<p><strong>Запасной способ запуска</strong> из папки проекта:</p>
+<pre><code class="language-bash">python3 -m http.server 8000 --bind 127.0.0.1
+</code></pre>
+<p>Затем вручную откройте <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>. Если порт занят, замените в команде <code>8000</code> на <code>8001</code> и откройте <a href="http://127.0.0.1:8001">http://127.0.0.1:8001</a>. На Windows вместо <code>python3</code> используйте <code>py -3</code>. Возможности локального сервера описаны в <a href="https://docs.python.org/3/library/http.server.html">документации Python</a>.</p>
+<h2>2. Цель и выбранные варианты</h2>
+<p>Цель: организовать JavaScript-приложения с помощью отдельных модулей, применить <code>import</code>/<code>export</code>, отделить вычисления и данные от DOM, проверить корректный и ошибочный ввод.</p>
+<p>В PDF предусмотрен один назначенный вариант. По запросу выполнены три работы: выбран первый вариант каждого уровня, поскольку индивидуальные номера не указаны. Все работы имеют общую страницу запуска и входят в один архив.</p>
+<table>
+<thead>
+<tr>
+<th>Уровень</th>
+<th align="right">Вариант</th>
+<th>Задача и реализованные возможности</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Базовый</td>
+<td align="right">1</td>
+<td>Конвертер температур: °C ↔ °F, °C → K; дополнительно все обратные направления, обмен единиц, сброс и проверка абсолютного нуля.</td>
+</tr>
+<tr>
+<td>Средний</td>
+<td align="right">8</td>
+<td>Список задач: добавление, выполнение, удаление, фильтры, счетчики и сохранение в браузере.</td>
+</tr>
+<tr>
+<td>Повышенный</td>
+<td align="right">16</td>
+<td>Мини-CRM: создание, просмотр, изменение и удаление клиентов, проверка данных, поиск, фильтр статуса, сортировка и сохранение.</td>
+</tr>
+</tbody></table>
+<h2>3. Ход выполнения и обязательные требования</h2>
+<ol>
+<li>Созданы общая HTML-страница, стили и отдельные папки модулей для трех уровней.</li>
+<li>Формулы, операции с массивами и проверка данных вынесены из DOM-интерфейса.</li>
+<li>Обработчики событий связывают модели с интерфейсом через именованные экспорты и экспорт по умолчанию.</li>
+<li>Общий <code>storage.js</code> добавляет независимое сохранение JSON и обработку ошибок хранилища.</li>
+<li>Подготовлены локальный запуск, проверки моделей, таблицы результатов и ответы для защиты.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Требование задания</th>
+<th>Реализация</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Не менее 3 собственных JS-модулей</td>
+<td>Базовый уровень: 3; средний: 3 и общий <code>storage.js</code>; повышенный: 5 и общий <code>storage.js</code>.</td>
+</tr>
+<tr>
+<td>Не менее 2 именованных экспортов и 2 импортов</td>
+<td>Например, <code>convertTemperature</code>, <code>getFormula</code>, <code>addTask</code>, <code>toggleTask</code>; каждый <code>main.js</code> уровня импортирует несколько модулей.</td>
+</tr>
+<tr>
+<td>Не менее 2 событий через <code>addEventListener()</code></td>
+<td>Конвертер: <code>submit</code>, <code>input</code>, <code>change</code>, <code>click</code>, <code>reset</code>; задачи и CRM: <code>submit</code>, <code>input</code>, <code>change</code>, <code>click</code>.</td>
+</tr>
+<tr>
+<td>Разделение ответственности</td>
+<td>Модели работают с данными; <code>ui.js</code> обновляет DOM; <code>main.js</code> связывает действия; <code>storage.js</code> сохраняет JSON.</td>
+</tr>
+<tr>
+<td>Некорректный ввод</td>
+<td>Пустые поля, неверные форматы, границы и повторные записи проверяются до изменения данных.</td>
+</tr>
+<tr>
+<td>Минимум 5 проверок на вариант</td>
+<td>Результаты приведены отдельно для каждого уровня в разделе 8.</td>
+</tr>
+</tbody></table>
+<h2>4. Структура проекта</h2>
+<table>
+<thead>
+<tr>
+<th>Путь</th>
+<th>Назначение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>index.html</code></td>
+<td>Общая страница с тремя вкладками и точкой входа <code>type=&quot;module&quot;</code>.</td>
+</tr>
+<tr>
+<td><code>styles/style.css</code></td>
+<td>Общие стили, формы, списки и таблица CRM.</td>
+</tr>
+<tr>
+<td><code>src/main.js</code></td>
+<td>Запуск трех приложений и навигации.</td>
+</tr>
+<tr>
+<td><code>src/navigation.js</code></td>
+<td>Переключение вкладок, адресный фрагмент и управление клавиатурой.</td>
+</tr>
+<tr>
+<td><code>src/modules/basic/</code></td>
+<td><code>temperature.js</code>, <code>ui.js</code>, <code>main.js</code> — базовый уровень.</td>
+</tr>
+<tr>
+<td><code>src/modules/medium/</code></td>
+<td><code>model.js</code>, <code>ui.js</code>, <code>main.js</code> — средний уровень.</td>
+</tr>
+<tr>
+<td><code>src/modules/advanced/</code></td>
+<td><code>contacts.js</code>, <code>validation.js</code>, <code>search.js</code>, <code>ui.js</code>, <code>main.js</code> — повышенный уровень.</td>
+</tr>
+<tr>
+<td><code>src/modules/shared/storage.js</code></td>
+<td>Общий модуль хранения данных в браузере.</td>
+</tr>
+<tr>
+<td><code>start.py</code>, <code>START_MAC.command</code>, <code>START_WINDOWS.bat</code></td>
+<td>Запуск локального HTTP-сервера и браузера.</td>
+</tr>
+<tr>
+<td><code>tests/models.test.js</code></td>
+<td>Автоматические проверки чистых моделей и хранения.</td>
+</tr>
+<tr>
+<td><code>tests/model-results.txt</code></td>
+<td>Сохраненный результат запуска автоматических проверок.</td>
+</tr>
+<tr>
+<td><code>tests/browser-results.json</code>, <code>docs/</code></td>
+<td>Протокол проверки браузера и реальные скриншоты интерфейса.</td>
+</tr>
+<tr>
+<td><code>package.json</code></td>
+<td>Режим ES-модулей для Node.js; внешних зависимостей нет.</td>
+</tr>
+<tr>
+<td><code>README.md</code>, <code>report.html</code></td>
+<td>Инструкция и отчет, в том числе материалы для защиты.</td>
+</tr>
+</tbody></table>
+<h2>5. Модули и экспортируемые функции</h2>
+<p>В таблице пути <code>basic/</code>, <code>medium/</code>, <code>advanced/</code>, <code>shared/</code> относятся к каталогу <code>src/modules/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Модуль</th>
+<th>Основные экспорты и ответственность</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>basic/temperature.js</code></td>
+<td><code>parseTemperature(value)</code> проверяет число; <code>convertTemperature(value, from, to)</code> переводит единицы; <code>getFormula(from, to)</code> возвращает формулу. Экспортирует также <code>celsiusToFahrenheit</code>, <code>fahrenheitToCelsius</code>, <code>celsiusToKelvin</code>, <code>UNIT_LABELS</code>, <code>ABSOLUTE_ZERO</code>.</td>
+</tr>
+<tr>
+<td><code>basic/ui.js</code></td>
+<td><code>default createTemperatureUI(root)</code> создает форму; <code>showTemperatureResult</code>, <code>showTemperatureError</code>, <code>clearTemperatureResult</code> обновляют вывод.</td>
+</tr>
+<tr>
+<td><code>basic/main.js</code></td>
+<td><code>initBasic(root)</code> подключает обработчики формы, сброса и обмена единиц.</td>
+</tr>
+<tr>
+<td><code>medium/model.js</code></td>
+<td><code>addTask(tasks, value)</code>, <code>toggleTask(tasks, id)</code>, <code>removeTask(tasks, id)</code>, <code>clearCompletedTasks(tasks)</code> возвращают новые массивы; <code>filterTasks</code>, <code>getTaskCounts</code>, <code>restoreTasks</code> выбирают и проверяют данные. Есть <code>normalizeTitle</code>, <code>validateTaskTitle</code>, <code>MAX_TITLE_LENGTH</code>.</td>
+</tr>
+<tr>
+<td><code>medium/ui.js</code></td>
+<td><code>default createTaskInterface(root)</code> создает интерфейс; <code>renderTasks</code>, <code>showTaskMessage</code>, <code>showStorageWarning</code> отображают состояние.</td>
+</tr>
+<tr>
+<td><code>medium/main.js</code></td>
+<td><code>initMedium(root)</code> управляет событиями, текущим фильтром и сохранением задач.</td>
+</tr>
+<tr>
+<td><code>advanced/contacts.js</code></td>
+<td><code>addClient(clients, input, id)</code>, <code>getClientById(clients, id)</code>, <code>updateClient(clients, id, input)</code>, <code>deleteClient(clients, id)</code> реализуют CRUD; <code>sanitizeClients(value)</code> проверяет загруженные записи.</td>
+</tr>
+<tr>
+<td><code>advanced/validation.js</code></td>
+<td><code>normalizeClient(input)</code> нормализует поля; <code>validateClient(input, clients, excludeId)</code> возвращает <code>{ valid, errors, data }</code>; <code>CLIENT_STATUSES</code> задает допустимые статусы.</td>
+</tr>
+<tr>
+<td><code>advanced/search.js</code></td>
+<td><code>searchClients</code>, <code>filterClientsByStatus</code>, <code>sortClients</code>; <code>selectClients(clients, { query, status, sort })</code> объединяет поиск, фильтр и сортировку.</td>
+</tr>
+<tr>
+<td><code>advanced/ui.js</code></td>
+<td><code>default createCrmUI(root)</code> создает форму и таблицу, возвращает методы чтения полей и отображения ошибок, списка и режима редактирования.</td>
+</tr>
+<tr>
+<td><code>advanced/main.js</code></td>
+<td><code>initAdvanced(root)</code> связывает CRUD, проверку, поиск, хранение и интерфейс.</td>
+</tr>
+<tr>
+<td><code>shared/storage.js</code></td>
+<td><code>createStorage(key, adapter)</code> возвращает методы <code>load(fallback)</code>, <code>save(value)</code>, <code>clear()</code>, <code>getLastError()</code>; <code>adapter</code> позволяет тестировать хранение без браузера.</td>
+</tr>
+<tr>
+<td><code>src/navigation.js</code></td>
+<td><code>LEVELS</code> и <code>initNavigation()</code> задают допустимые вкладки и их переключение.</td>
+</tr>
+</tbody></table>
+<h2>6. Ключевые листинги и схема импортов</h2>
+<p>Подключение в <code>index.html</code>:</p>
+<pre><code class="language-html">&lt;script type=&quot;module&quot; src=&quot;./src/main.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>Именованный экспорт из <code>src/modules/basic/temperature.js</code>:</p>
+<pre><code class="language-js">export function celsiusToFahrenheit(celsius) {
+  return celsius * 1.8 + 32;
+}
+</code></pre>
+<p>Импорты из <code>src/modules/basic/main.js</code>:</p>
+<pre><code class="language-js">import { convertTemperature, getFormula, parseTemperature } from &#39;./temperature.js&#39;;
+import createTemperatureUI, {
+  clearTemperatureResult,
+  showTemperatureError,
+  showTemperatureResult,
+} from &#39;./ui.js&#39;;
+</code></pre>
+<p><code>createTemperatureUI</code> объявлен как <code>export default function createTemperatureUI(root)</code>. Он импортируется без фигурных скобок, а именованные экспорты — в скобках. Одновременно использовать оба вида экспорта разрешено. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">MDN: export</a></p>
+<p>Пример операции модели из <code>src/modules/advanced/contacts.js</code>:</p>
+<pre><code class="language-js">export function deleteClient(clients, id) {
+  if (!getClientById(clients, id)) throw new Error(&quot;Клиент для удаления не найден.&quot;);
+  return clients.filter((client) =&gt; client.id !== id);
+}
+</code></pre>
+<p>Функция возвращает новый массив и не обращается к странице. Обработчик в <code>main.js</code> сохраняет полученный массив и просит <code>ui.js</code> перерисовать таблицу.</p>
+<table>
+<thead>
+<tr>
+<th>Импортирующий файл</th>
+<th>Откуда импортирует</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>src/main.js</code></td>
+<td><code>modules/basic/main.js</code>, <code>modules/medium/main.js</code>, <code>modules/advanced/main.js</code>, <code>navigation.js</code></td>
+</tr>
+<tr>
+<td><code>basic/main.js</code></td>
+<td><code>temperature.js</code>, <code>ui.js</code></td>
+</tr>
+<tr>
+<td><code>basic/ui.js</code></td>
+<td><code>temperature.js</code></td>
+</tr>
+<tr>
+<td><code>medium/main.js</code></td>
+<td><code>model.js</code>, <code>ui.js</code>, <code>../shared/storage.js</code></td>
+</tr>
+<tr>
+<td><code>advanced/main.js</code></td>
+<td><code>contacts.js</code>, <code>validation.js</code>, <code>search.js</code>, <code>ui.js</code>, <code>../shared/storage.js</code></td>
+</tr>
+<tr>
+<td><code>advanced/contacts.js</code>, <code>advanced/search.js</code>, <code>advanced/ui.js</code></td>
+<td><code>validation.js</code></td>
+</tr>
+</tbody></table>
+<p>Диаграмма файлов повышенного уровня: стрелка обозначает импорт.</p>
+<p><img src="docs/imports.svg" alt="Схема импортов мини-CRM"></p>
+<p>Циклов нет: модели и общие модули не импортируют обработчики. Изменение разметки затрагивает <code>ui.js</code>, изменение формул — <code>temperature.js</code>, правил клиента — <code>validation.js</code>. Дополнительный модуль <code>storage.js</code> используется двумя приложениями без копирования его кода.</p>
+<h2>7. Данные, ограничения и обработка ошибок</h2>
+<p>Списки задач и клиентов первоначально пусты. Конвертер ничего не сохраняет. Задачи записываются под ключом <code>lab10.tasks.v1</code>, клиенты — <code>lab10.crm.clients.v1</code> в <code>localStorage</code>. Данные принадлежат этому браузеру и адресу страницы; другой порт или другой браузер использует отдельное хранилище. Очистка данных сайта удаляет записи. <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">MDN: localStorage</a></p>
+<p>При ошибке чтения JSON приложение начинает с пустого списка; записи неверной структуры пропускаются. Если сохранение недоступно, на странице появляется сообщение, а текущие изменения остаются в памяти вкладки. Это учебная CRM: общей серверной базы, учетных записей и синхронизации между пользователями нет.</p>
+<table>
+<thead>
+<tr>
+<th>Проверяемые данные</th>
+<th>Правило</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Температура</td>
+<td>Конечное число; допустимы точка, запятая и знак минуса. Минимум: −273,15 °C, −459,67 °F или 0 K. Переполнение результата отклоняется.</td>
+</tr>
+<tr>
+<td>Название задачи</td>
+<td>После удаления лишних пробелов — от 1 до 120 символов; одинаковые названия без учета регистра отклоняются.</td>
+</tr>
+<tr>
+<td>Имя клиента</td>
+<td>От 2 до 80 символов после нормализации пробелов.</td>
+</tr>
+<tr>
+<td>Email клиента</td>
+<td>Проверка формата, максимум 254 символа; email уникален без учета регистра. При редактировании собственный email разрешен.</td>
+</tr>
+<tr>
+<td>Телефон клиента</td>
+<td>От 10 до 15 цифр; во вводе разрешены <code>+</code>, пробелы, скобки и дефисы.</td>
+</tr>
+<tr>
+<td>Статус клиента</td>
+<td>Только «Новый», «В работе», «Завершён».</td>
+</tr>
+</tbody></table>
+<p>Для демонстрации можно ввести вымышленного клиента: <strong>Алия Садыкова</strong>, <code>aliya@example.org</code>, <code>+7 (701) 123-45-67</code>, статус «Новый». Пользовательский текст выводится через <code>textContent</code>, поэтому введенная HTML-разметка остается текстом.</p>
+<h2>8. Тестирование</h2>
+<p>Ниже зафиксированы фактически выполненные проверки функций моделей. Они проверяют вычисления и правила работы с данными; результаты браузерной проверки и изображения интерфейса вынесены в следующий раздел. Объединенный набор автоматических тестов завершился успешно: <strong>38 проверок, 38 пройдено, 0 ошибок</strong> — 10 для конвертера, 10 для задач, 12 для CRM и 6 для хранения.</p>
+<h3>Базовый уровень — вариант 1</h3>
+<table>
+<thead>
+<tr>
+<th>№</th>
+<th>Сценарий и вход</th>
+<th>Ожидаемый результат</th>
+<th>Фактический результат</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Б1</td>
+<td>Корректный ввод: <code>0 °C → °F</code></td>
+<td><code>32 °F</code></td>
+<td><code>32 °F</code> — пройдено.</td>
+</tr>
+<tr>
+<td>Б2</td>
+<td>Пустая строка</td>
+<td>Ошибка, без вычисления</td>
+<td>«Введите температуру.» — пройдено.</td>
+</tr>
+<tr>
+<td>Б3</td>
+<td>Неверный формат: <code>abc</code></td>
+<td>Ошибка ввода числа</td>
+<td>Ошибка ввода числа — пройдено.</td>
+</tr>
+<tr>
+<td>Б4</td>
+<td>Граница: <code>−459,67 °F → K</code></td>
+<td>Точно <code>0 K</code></td>
+<td><code>0 K</code> — пройдено.</td>
+</tr>
+<tr>
+<td>Б5</td>
+<td>Дважды <code>40 °C → °F</code></td>
+<td>Оба раза <code>104 °F</code></td>
+<td>Одинаковый результат <code>104 °F</code> — пройдено.</td>
+</tr>
+<tr>
+<td>Б6</td>
+<td><code>−274 °C → K</code></td>
+<td>Ошибка абсолютного нуля</td>
+<td>Перевод отклонен — пройдено.</td>
+</tr>
+<tr>
+<td>Б7</td>
+<td>Десятичная запятая: <code>−12,5 °C → °F</code></td>
+<td><code>9,5 °F</code></td>
+<td><code>9,5 °F</code> — пройдено.</td>
+</tr>
+</tbody></table>
+<h3>Средний уровень — вариант 8</h3>
+<table>
+<thead>
+<tr>
+<th>№</th>
+<th>Сценарий и вход</th>
+<th>Ожидаемый результат</th>
+<th>Фактический результат</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>С1</td>
+<td>Добавить <code> Сдать   лабораторную </code></td>
+<td>Одна невыполненная задача, лишние пробелы удалены</td>
+<td><code>id: 1</code>, «Сдать лабораторную», <code>completed: false</code> — пройдено.</td>
+</tr>
+<tr>
+<td>С2</td>
+<td>Название из двух пробелов</td>
+<td>Ошибка пустого названия</td>
+<td>«Введите название задачи.» — пройдено.</td>
+</tr>
+<tr>
+<td>С3</td>
+<td>Вызов модели с числом <code>123</code> вместо строки</td>
+<td>Ошибка типа данных</td>
+<td>«Название задачи должно быть текстом.» — пройдено.</td>
+</tr>
+<tr>
+<td>С4</td>
+<td>Название из 120 букв</td>
+<td>Задача добавлена</td>
+<td>Длина названия 120 — пройдено.</td>
+</tr>
+<tr>
+<td>С5</td>
+<td>Название из 121 буквы</td>
+<td>Ошибка длины</td>
+<td>Сообщение об ограничении 120 символов — пройдено.</td>
+</tr>
+<tr>
+<td>С6</td>
+<td>После «Сдать работу» добавить <code>сдать   РАБОТУ</code></td>
+<td>Дубликат отклонен</td>
+<td>«Такая задача уже есть в списке.» — пройдено.</td>
+</tr>
+<tr>
+<td>С7</td>
+<td>Дважды переключить выполнение одной задачи</td>
+<td>Вернуться к <code>completed: false</code></td>
+<td>Состояние восстановлено, исходный массив не изменен — пройдено.</td>
+</tr>
+</tbody></table>
+<h3>Повышенный уровень — вариант 16</h3>
+<p>Для П1 используется запись: <code>name: &#39;  Алия   Садыкова &#39;</code>, <code>email: &#39;ALIYA@EXAMPLE.ORG &#39;</code>, <code>phone: &#39;+7 (701) 123-45-67&#39;</code>, <code>status: &#39;Новый&#39;</code>, <code>id: &#39;client-1&#39;</code>. Остальные изменения применяются к этим корректным данным.</p>
+<table>
+<thead>
+<tr>
+<th>№</th>
+<th>Сценарий и вход</th>
+<th>Ожидаемый результат</th>
+<th>Фактический результат</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>П1</td>
+<td>Добавление корректной записи</td>
+<td>Одна нормализованная запись</td>
+<td>«Алия Садыкова», <code>aliya@example.org</code>, <code>+77011234567</code> — пройдено.</td>
+</tr>
+<tr>
+<td>П2</td>
+<td>Пустое имя</td>
+<td>Ошибка, запись не добавляется</td>
+<td><code>valid: false</code>, ошибка имени — пройдено.</td>
+</tr>
+<tr>
+<td>П3</td>
+<td>Email <code>no-email</code></td>
+<td>Ошибка формата</td>
+<td><code>valid: false</code>, ошибка email — пройдено.</td>
+</tr>
+<tr>
+<td>П4</td>
+<td>Имя из 2 и 80 букв; телефон из 10 и 15 цифр</td>
+<td>Граничные значения разрешены</td>
+<td>Обе пары допустимы — пройдено.</td>
+</tr>
+<tr>
+<td>П5</td>
+<td>Имя из 81 буквы</td>
+<td>Ошибка длины</td>
+<td><code>valid: false</code> — пройдено.</td>
+</tr>
+<tr>
+<td>П6</td>
+<td>Повторно добавить тот же email с другим ID</td>
+<td>Дубликат отклонен</td>
+<td>Ошибка «Клиент с таким email уже существует.» — пройдено.</td>
+</tr>
+<tr>
+<td>П7</td>
+<td>Изменить статус на «В работе», найти по <code>САДЫКОВА</code></td>
+<td>Обновление и одна найденная запись</td>
+<td>Статус обновлен, найден 1 клиент — пройдено.</td>
+</tr>
+<tr>
+<td>П8</td>
+<td>Удалить единственного клиента по ID</td>
+<td>Пустой список</td>
+<td><code>[]</code> — пройдено.</td>
+</tr>
+</tbody></table>
+<p><strong>Повторный запуск автоматических проверок</strong>: нужен Node.js 18 или новее только для тестов. Из папки проекта выполните:</p>
+<pre><code class="language-bash">node --test tests/models.test.js
+</code></pre>
+<p>Тесты используют встроенные <code>node:test</code> и <code>node:assert/strict</code>; установка npm-пакетов не нужна. Сохраненный вывод находится в <code>tests/model-results.txt</code>.</p>
+<h2>9. Проверка в браузере и скриншоты</h2>
+<p><strong>Выявленная и исправленная ошибка.</strong> При переключении вкладок запись в <code>location.hash</code> перемещала фокус с кнопки на раздел. Из-за этого последовательное управление клавишами <code>Home</code> и <code>ArrowRight</code> работало неправильно. В <code>src/navigation.js</code> обновление адреса заменено на <code>history.pushState</code>, добавлен обработчик <code>popstate</code> для переходов назад и вперед.</p>
+<p><strong>Браузер:</strong> Chromium 153.0.8010.0. <strong>Результат: 30 проверок пройдено, 0 ошибок.</strong> Все 14 JS-модулей загружены через HTTP со статусом 200; ошибок загрузки в Network и необработанных ошибок в Console не обнаружено. Подробный протокол: <code>tests/browser-results.json</code>.</p>
+<p>Проверены ввод данных во всех трех интерфейсах, сохранение после перезагрузки, подтверждение и отмена удаления клиента, управление вкладками с клавиатуры после исправления, работа при поврежденном и недоступном <code>localStorage</code>. На ширине 390 px у всех трех разделов отсутствует горизонтальное переполнение страницы.</p>
+<p>Запуск <code>start.py</code> проверен в Linux. Обертки <code>START_MAC.command</code> и <code>START_WINDOWS.bat</code> подготовлены для соответствующих систем; отдельные запуски на macOS и Windows не выполнялись.</p>
+<p><strong>Базовый уровень — конвертер температур.</strong></p>
+<p><img src="docs/basic.png" alt="Конвертер температур"></p>
+<p><strong>Средний уровень — список задач.</strong></p>
+<p><img src="docs/medium.png" alt="Список задач"></p>
+<p><strong>Повышенный уровень — мини-CRM с вымышленными данными.</strong></p>
+<p><img src="docs/advanced.png" alt="Мини-CRM клиентов"></p>
+<p><strong>Интерфейс на узком экране, ширина 390 px.</strong></p>
+<p><img src="docs/mobile.png" alt="Мобильный вид интерфейса"></p>
+<h2>10. Ответы на контрольные вопросы</h2>
+<p>Нумерация 9–20 сохранена из задания.</p>
+<h3>9. Что такое модуль в JavaScript?</h3>
+<p>Это отдельная единица кода со своей областью видимости. <code>export</code> открывает нужные функции и данные для других модулей, а <code>import</code> подключает их. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">MDN: Modules</a></p>
+<h3>10. Чем ES-модули отличаются от обычных скриптов?</h3>
+<p>ES-модули поддерживают статические <code>import</code>/<code>export</code>, выполняются в строгом режиме и имеют собственную область видимости. Их зависимости загружаются по импортам. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">MDN: import</a></p>
+<h3>11. Для чего нужен <code>type=&quot;module&quot;</code>?</h3>
+<p>Он сообщает браузеру, что подключенный скрипт нужно интерпретировать как ES-модуль. В проекте этот атрибут стоит у подключения <code>src/main.js</code>. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">MDN: import</a></p>
+<h3>12. Как работает именованный <code>export</code>?</h3>
+<p>Он публикует значение под определенным именем: например, <code>export function convertTemperature(...)</code>. Другой файл использует <code>import { convertTemperature } from &#39;./temperature.js&#39;</code>; при необходимости имя можно переименовать через <code>as</code>. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">MDN: export</a></p>
+<h3>13. Чем <code>default export</code> отличается от <code>named export</code>?</h3>
+<p>Именованных экспортов в модуле может быть несколько, а экспорт по умолчанию — один. Обычная форма импорта <code>default</code> не требует фигурных скобок и позволяет выбрать локальное имя. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">MDN: export</a></p>
+<h3>14. Почему важен путь к импортируемому файлу?</h3>
+<p>По этому пути среда находит модуль. В нашем проекте относительный путь считается от импортирующего файла; важны имя, регистр символов и расширение <code>.js</code>. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">MDN: import</a></p>
+<h3>15. Что такое область видимости модуля?</h3>
+<p>Это граница доступности его переменных и функций. Объявления верхнего уровня модуля не становятся автоматически свойствами <code>window</code>; другие модули получают доступ через экспорты. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">MDN: Modules</a></p>
+<h3>16. Почему модульное приложение удобнее сопровождать?</h3>
+<p>У каждого файла есть понятная задача. Например, изменение формулы температуры не требует изменения таблицы CRM; общий модуль хранения исправляется один раз для двух приложений.</p>
+<h3>17. Зачем отделять бизнес-логику от DOM?</h3>
+<p>Так функции можно проверять без браузера и повторно использовать с другой разметкой. В этом проекте тесты вызывают <code>convertTemperature</code>, <code>addTask</code> и <code>addClient</code> непосредственно.</p>
+<h3>18. Как диагностировать ошибку загрузки модуля?</h3>
+<p>Откройте DevTools → Console и Network. Проверьте текст ошибки, адрес запроса, наличие файла, HTTP-статус и JavaScript-тип ответа, затем соответствие <code>import</code> и <code>export</code>. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">MDN: Modules</a></p>
+<h3>19. Почему рекомендуется запускать проект через HTTP-сервер?</h3>
+<p>При открытии через <code>file://</code> браузер может блокировать загрузку модулей из-за правил происхождения ресурсов. Локальный HTTP-сервер обеспечивает обычные запросы по URL. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">MDN: Modules</a></p>
+<h3>20. Что такое циклическая зависимость модулей?</h3>
+<p>Это ситуация, когда A импортирует B, а B прямо или через другие файлы зависит от A. Иногда она вызывает обращение к еще не инициализированному значению; в данном проекте таких циклов нет. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">MDN: Modules</a></p>
+<h2>11. Вывод</h2>
+<p>Реализованы три приложения разной сложности с единой точкой входа. Использованы именованные экспорты, экспорт по умолчанию, относительные импорты и обработчики событий. Вычисления, модели данных, DOM и хранение разделены; ошибки ввода и повторные действия проверены. Общий модуль хранения демонстрирует повторное использование кода.</p>
+<h2>Источники</h2>
+<ul>
+<li>Задание: <code>Laboratornaya_rabota_10_ES_Modules.pdf</code>, предоставленное для лабораторной №10.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">MDN — JavaScript modules</a>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">MDN — import</a>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">MDN — export</a>.</li>
+<li><a href="https://docs.python.org/3/library/http.server.html">Python — http.server</a>.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">MDN — localStorage</a>.</li>
+</ul>
+</article></body></html>

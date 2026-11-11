@@ -1,0 +1,10 @@
+{
+  "name": "lab10-es-modules-mankeev",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Лабораторная №10: базовый, средний и повышенный уровни",
+  "scripts": {
+    "test": "node --test tests/models.test.js"
+  }
+}
